@@ -1,0 +1,15 @@
+{
+  "name": "jisc_build",
+  "version": "1.0.0",
+  "description": "Shared jisc build scripts and configuration for JJA and JHT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Wood-Mitrovski",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^2.13.1",
+    "send": "^0.1.4"
+  }
+}
