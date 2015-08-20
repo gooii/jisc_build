@@ -51,13 +51,14 @@ createMiddleware = function(connect, config) {
   var mountFolders = config.mountFolders || [];
   var brands = config.brands || [];
   var contentRoot = config.contentRoot;
+  var proxyPaths = config.proxyPaths;
 
   var rewriteRule = '!';
   rewriteRule += proxyPaths.join('|');
   rewriteRule += '|\\.' + fileTypes.join('|\\.');
   rewriteRule += '$ /index.html';
 
-  var middlewares = [modRewrite[rewriteRule], proxySnippet];
+  var middlewares = [modRewrite([rewriteRule]), proxySnippet];
 
   _.each(mountFolders, function(folder) {
     middlewares.push(connect.static(path.resolve(folder)));
