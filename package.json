@@ -1,6 +1,6 @@
 {
   "name": "jisc_build",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared jisc build scripts and configuration for JJA and JHT",
   "main": "index.js",
   "scripts": {
@@ -11,5 +11,9 @@
   "dependencies": {
     "connect": "^2.13.1",
     "send": "^0.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gooii/jisc_build.git"
   }
 }
