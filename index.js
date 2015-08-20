@@ -1,9 +1,76 @@
 var send = require('send')
   , utils = require('connect/lib/utils')
   , parse = utils.parseUrl
-  , url = require('url');
+  , url = require('url')
+  , modRewrite = require('connect-modrewrite')
+  , path = require('path')
+  , proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest
+  , _ = require('lodash');
 
-var templateProxy = function(brandName, contentRoot) {
+var fileTypes = ['html', 'png', 'gif', 'jpg', 'js', 'css', 'woff', 'ttf', 'svg'];
+
+createConnectConfig = function(options) {
+  var config = {
+    options: {
+      port: port,
+      hostname: '0.0.0.0'
+    },
+    proxies: createProxies(options),
+    livereload: {
+      options: {
+        livereload: livereload_port,
+        middleware: function (connect) {
+          return createMiddleware(connect, options);
+        }
+      }
+    }
+  };
+  return config;
+};
+
+createProxies = function(options) {
+  var proxyServer = options.proxyServer || "";
+  var proxyPaths = options.proxyPaths || [];
+  // Configure proxies
+  var proxies = [];
+  _.each(proxyPaths, function (path) {
+    proxies.push({
+      context: path,
+      host: proxyServer,
+      port: 443,
+      xforward: true,
+      changeOrigin: true,
+      https: true
+    })
+  });
+  return proxies;
+};
+
+createMiddleware = function(connect, config) {
+
+  var mountFolders = config.mountFolders || [];
+  var brands = config.brands || [];
+  var contentRoot = config.contentRoot;
+
+  var rewriteRule = '!';
+  rewriteRule += proxyPaths.join('|');
+  rewriteRule += '|\\.' + fileTypes.join('|\\.');
+  rewriteRule += '$ /index.html';
+
+  var middlewares = [modRewrite[rewriteRule], proxySnippet];
+
+  _.each(mountFolders, function(folder) {
+    middlewares.push(connect.static(path.resolve(folder)));
+  });
+
+  _.each(brands, function(brand) {
+    middlewares.push(templateProxy(brand, contentRoot));
+  });
+
+  return middlewares;
+};
+
+templateProxy = function(brandName, contentRoot) {
 
   var redirect = false;
   var root = contentRoot + brandName;
@@ -80,5 +147,5 @@ var templateProxy = function(brandName, contentRoot) {
 };
 
 module.exports = {
-  templateProxy: templateProxy
+  createConnectConfig: createConnectConfig
 };
