@@ -12,13 +12,13 @@ var fileTypes = ['html', 'png', 'gif', 'jpg', 'js', 'css', 'woff', 'ttf', 'svg']
 createConnectConfig = function(options) {
   var config = {
     options: {
-      port: port,
+      port: options.port,
       hostname: '0.0.0.0'
     },
     proxies: createProxies(options),
     livereload: {
       options: {
-        livereload: livereload_port,
+        livereload: options.livereload_port,
         middleware: function (connect) {
           return createMiddleware(connect, options);
         }
@@ -64,6 +64,10 @@ createMiddleware = function(connect, config) {
     middlewares.push(connect.static(path.resolve(folder)));
   });
 
+  if(contentRoot.lastIndexOf('/') != contentRoot.length - 1) {
+    contentRoot += '/';
+  }
+
   _.each(brands, function(brand) {
     middlewares.push(templateProxy(brand, contentRoot));
   });
@@ -85,7 +89,7 @@ templateProxy = function(brandName, contentRoot) {
     var isTemplate = path.indexOf('/templates') == 0;
     var isImage = path.indexOf('/images') == 0;
 
-    //grunt.log.writeln('Check path',path,isTemplate,isImage);
+    //console.log('Check path',path,isTemplate,isImage);
 
     if(!isTemplate && !isImage) {
       return next();
@@ -95,7 +99,7 @@ templateProxy = function(brandName, contentRoot) {
         path = path.substring(11);
       }
 
-      //grunt.log.writeln('Reduced path',path);
+      //console.log('Reduced path',path);
     }
 
     if (path == '/' && originalUrl.pathname[originalUrl.pathname.length - 1] != '/') {
@@ -125,15 +129,15 @@ templateProxy = function(brandName, contentRoot) {
     if(isTemplate && (path.indexOf(brandName) == 0)) {
       path = path.substring(brandName.length);
     } else if(isImage && (path.indexOf(brandName) != -1)) {
-      //grunt.log.writeln('Brand is in image path',path.split(brandName));
+      //console.log('Brand is in image path',path.split(brandName));
       path = path.split(brandName).join('');
     }
 
-    //if(isImage) {
-    //  grunt.log.writeln('IMAGE',path,root)
-    //} else {
-    //  grunt.log.writeln('TEMPLATE', path, root);
-    //}
+    if(isImage) {
+      //console.log('IMAGE',path,root)
+    } else {
+      //console.log('TEMPLATE', path, root);
+    }
 
 
     send(req, path)
