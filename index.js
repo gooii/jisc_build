@@ -1,6 +1,6 @@
 var send = require('send')
   , utils = require('connect/lib/utils')
-  , parse = utils.parseUrl
+  , parse = require('parseUrl')
   , url = require('url')
   , modRewrite = require('connect-modrewrite')
   , path = require('path')
