@@ -15,7 +15,6 @@ createConnectConfig = function(options) {
       port: options.port,
       hostname: '0.0.0.0'
     },
-    proxies: createProxies(options),
     livereload: {
       options: {
         livereload: options.livereload_port,
@@ -25,6 +24,9 @@ createConnectConfig = function(options) {
       }
     }
   };
+  if(options.proxyServer) {
+    config.proxies = createProxies(options);
+  }
   return config;
 };
 
@@ -54,11 +56,18 @@ createMiddleware = function(connect, config) {
   var proxyPaths = config.proxyPaths;
 
   var rewriteRule = '!';
-  rewriteRule += proxyPaths.join('|');
-  rewriteRule += '|\\.' + fileTypes.join('|\\.');
+
+  if(proxyPaths) {
+    rewriteRule += proxyPaths.join('|') + '|';
+  }
+  rewriteRule += '\\.' + fileTypes.join('|\\.');
   rewriteRule += '$ /index.html';
 
-  var middlewares = [modRewrite([rewriteRule]), proxySnippet];
+  var middlewares = [modRewrite([rewriteRule])];
+
+  if(config.proxyServer) {
+    middlewares.push(proxySnippet);
+  }
 
   _.each(mountFolders, function(folder) {
     middlewares.push(connect.static(path.resolve(folder)));
