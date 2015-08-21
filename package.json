@@ -1,6 +1,6 @@
 {
   "name": "jisc_build",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Shared jisc build scripts and configuration for JJA and JHT",
   "main": "index.js",
   "scripts": {
