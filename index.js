@@ -5,7 +5,8 @@ var send = require('send')
   , modRewrite = require('connect-modrewrite')
   , path = require('path')
   , proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest
-  , _ = require('lodash');
+  , _ = require('lodash')
+  , isThere = require("is-there");
 
 var fileTypes = ['html', 'png', 'gif', 'jpg', 'js', 'css', 'woff', 'ttf', 'svg'];
 
@@ -77,17 +78,18 @@ createMiddleware = function(connect, config) {
     contentRoot += '/';
   }
 
-  _.each(brands, function(brand) {
-    middlewares.push(templateProxy(brand, contentRoot));
-  });
+  middlewares.push(templateProxy(brands,contentRoot));
+  //_.each(brands, function(brand) {
+  //  middlewares.push(templateProxy(brand, contentRoot));
+  //});
 
   return middlewares;
 };
 
-templateProxy = function(brandName, contentRoot) {
+templateProxy = function(brands, contentRoot) {
 
   var redirect = false;
-  var root = contentRoot + brandName;
+  var root = contentRoot;
 
   var rewriter = function(req, res, next) {
     if ('GET' != req.method && 'HEAD' != req.method) return next();
@@ -98,17 +100,19 @@ templateProxy = function(brandName, contentRoot) {
     var isTemplate = path.indexOf('/templates') == 0;
     var isImage = path.indexOf('/images') == 0;
 
-    //console.log('Check path',path,isTemplate,isImage);
+    console.log('Check path',path,isTemplate,isImage);
 
     if(!isTemplate && !isImage) {
       return next();
     } else {
-      // Strip either /templates or /images off the front
       if(isTemplate) {
+        // Strip /templates off the front
         path = path.substring(11);
+      } else {
+        path = path.substring(8);
       }
 
-      //console.log('Reduced path',path);
+      console.log('Reduced path',path);
     }
 
     if (path == '/' && originalUrl.pathname[originalUrl.pathname.length - 1] != '/') {
@@ -135,21 +139,13 @@ templateProxy = function(brandName, contentRoot) {
       next(err);
     }
 
-    if(isTemplate && (path.indexOf(brandName) == 0)) {
-      path = path.substring(brandName.length);
-    } else if(isImage && (path.indexOf(brandName) != -1)) {
-      //console.log('Brand is in image path',path.split(brandName));
-      path = path.split(brandName).join('');
+    var filePath = resolveBrandFile(root, brands, path, isTemplate);
+
+    if(filePath == undefined) {
+      return next();
     }
 
-    if(isImage) {
-      //console.log('IMAGE',path,root)
-    } else {
-      //console.log('TEMPLATE', path, root);
-    }
-
-
-    send(req, path)
+    send(req, filePath)
       .maxage(0)
       .root(root)
       .index('index.html')
@@ -159,6 +155,60 @@ templateProxy = function(brandName, contentRoot) {
   };
   return rewriter;
 };
+
+function resolveBrandFile(root, brands, file, isTemplate) {
+
+  console.log('resolveBrandFile. Root : ' + root + '. file : ' + file + '. isTemplate : ' + isTemplate);
+  console.log('brands : ' + brands);
+  // root : bower_components/jja_content/brands/
+  // file : 'sparerib/about/about.html' or 'images/sparerib/banner.jpg'
+
+  // brands : ['sparerib','default']
+  // isTemplate : true
+
+  // 3 : is the first path section of 'file' a brand name
+  var fileParts = file.split('/');
+  var brandName = 'default';
+  if(fileParts.length > 1) {
+    var firstPathSection = fileParts[0];
+    if(_.indexOf(brands,firstPathSection) != -1) {
+      brandName = firstPathSection;
+    }
+  }
+  console.log('brand name ' + brandName);
+
+  var pathsToCheck = [];
+  if(isTemplate) {
+    pathsToCheck.push(root + file);
+    if(brandName != 'default') {
+      pathsToCheck.push(root + 'default/' + file.substring(brandName.length));
+    } else {
+      pathsToCheck.push(root + 'default/' + file);
+    }
+  } else {
+    pathsToCheck.push(root + 'images/' + file);
+    if(brandName != 'default') {
+      pathsToCheck.push(root + brandName + '/images/' + file.substring(brandName.length));
+      pathsToCheck.push(root + 'default/images/' + file.substring(brandName.length));
+    } else {
+      pathsToCheck.push(root + 'default/images/' + file);
+    }
+  }
+  pathsToCheck.push(file);
+
+  console.log('PTC : ' + pathsToCheck);
+  var actualPath = _.find(pathsToCheck,function(p) {
+    return isThere(p);
+  })
+
+  if(actualPath !== undefined) {
+    console.log('Actual path ' + actualPath);
+    return actualPath.substring(root.length);
+  } else {
+    return actualPath;
+  }
+
+}
 
 module.exports = {
   createConnectConfig: createConnectConfig
