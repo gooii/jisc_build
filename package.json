@@ -1,6 +1,6 @@
 {
   "name": "jisc_build",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Shared jisc build scripts and configuration for JJA and JHT",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,9 @@
   "author": "Martin Wood-Mitrovski",
   "license": "ISC",
   "dependencies": {
-    "connect": "^2.13.1",
-    "send": "^0.1.4",
-    "connect-modrewrite": "^0.7.6",
+    "connect": "2.13.1",
+    "send": "0.1.4",
+    "connect-modrewrite": "0.7.6",
     "grunt-connect-proxy": "0.1.8",
     "lodash": "^2.4.1",
     "parseurl":"^1.3.0",
