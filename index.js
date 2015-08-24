@@ -6,7 +6,8 @@ var send = require('send')
   , path = require('path')
   , proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest
   , _ = require('lodash')
-  , isThere = require("is-there");
+  , isThere = require("is-there")
+  , grunt = require("grunt");
 
 var fileTypes = ['html', 'png', 'gif', 'jpg', 'js', 'css', 'woff', 'ttf', 'svg'];
 
@@ -46,6 +47,7 @@ createProxies = function(options) {
       https: true
     })
   });
+  grunt.log.writeln('Proxies',proxies);
   return proxies;
 };
 
@@ -67,6 +69,7 @@ createMiddleware = function(connect, config) {
   var middlewares = [modRewrite([rewriteRule])];
 
   if(config.proxyServer) {
+    grunt.log.writeln('Add proxy snippet');
     middlewares.push(proxySnippet);
   }
 
@@ -79,9 +82,6 @@ createMiddleware = function(connect, config) {
   }
 
   middlewares.push(templateProxy(brands,contentRoot));
-  //_.each(brands, function(brand) {
-  //  middlewares.push(templateProxy(brand, contentRoot));
-  //});
 
   return middlewares;
 };
@@ -100,7 +100,7 @@ templateProxy = function(brands, contentRoot) {
     var isTemplate = path.indexOf('/templates') == 0;
     var isImage = path.indexOf('/images') == 0;
 
-    console.log('Check path',path,isTemplate,isImage);
+    grunt.log.writeln('Check path',path,isTemplate,isImage);
 
     if(!isTemplate && !isImage) {
       return next();
@@ -112,7 +112,7 @@ templateProxy = function(brands, contentRoot) {
         path = path.substring(8);
       }
 
-      console.log('Reduced path',path);
+      grunt.log.writeln('Reduced path',path);
     }
 
     if (path == '/' && originalUrl.pathname[originalUrl.pathname.length - 1] != '/') {
@@ -158,8 +158,8 @@ templateProxy = function(brands, contentRoot) {
 
 function resolveBrandFile(root, brands, file, isTemplate) {
 
-  console.log('resolveBrandFile. Root : ' + root + '. file : ' + file + '. isTemplate : ' + isTemplate);
-  console.log('brands : ' + brands);
+  grunt.log.writeln('resolveBrandFile. Root : ' + root + '. file : ' + file + '. isTemplate : ' + isTemplate);
+  grunt.log.writeln('brands : ' + brands);
   // root : bower_components/jja_content/brands/
   // file : 'sparerib/about/about.html' or 'images/sparerib/banner.jpg'
 
@@ -175,7 +175,7 @@ function resolveBrandFile(root, brands, file, isTemplate) {
       brandName = firstPathSection;
     }
   }
-  console.log('brand name ' + brandName);
+  grunt.log.writeln('brand name ' + brandName);
 
   var pathsToCheck = [];
   if(isTemplate) {
@@ -196,13 +196,13 @@ function resolveBrandFile(root, brands, file, isTemplate) {
   }
   pathsToCheck.push(file);
 
-  console.log('PTC : ' + pathsToCheck);
+  grunt.log.writeln('PTC : ' + pathsToCheck);
   var actualPath = _.find(pathsToCheck,function(p) {
     return isThere(p);
   })
 
   if(actualPath !== undefined) {
-    console.log('Actual path ' + actualPath);
+    grunt.log.writeln('Actual path ' + actualPath);
     return actualPath.substring(root.length);
   } else {
     return actualPath;
@@ -210,6 +210,46 @@ function resolveBrandFile(root, brands, file, isTemplate) {
 
 }
 
+registerCopyTasks = function(grunt, project) {
+  grunt.registerTask("copy_shib_login", function () {
+    grunt.file.mkdir("dist/Login");
+    grunt.file.copy("bower_components/" + project + "_ui/server/login.php", "dist/Login/login.php");
+  });
+
+  grunt.registerTask("copy_template_php", function () {
+    grunt.file.mkdir("dist/templates/");
+    grunt.file.copy("bower_components/" + project + "_ui/server/templates/index.php", "dist/templates/index.php");
+  });
+
+  grunt.registerTask("copy_robots_txt", function () {
+    grunt.file.copy("app/robots.txt", "dist/robots.txt");
+  });
+
+  grunt.registerTask("copy_htaccess",function () {
+    grunt.file.copy("config/apache/htaccess", "dist/.htaccess");
+  });
+
+  return ['copy_shib_login','copy_template_php','copy_robots_txt'];
+
+};
+
+registerReleaseTask = function(grunt) {
+  // release task which bumps the specified segment of the version number ('major', 'minor', 'patch', 'prerelease'
+  // or 'git'), then git tags, commits and pushes it to origin
+  //
+  // we could optionally pass in an additional build environment related task to include in the work flow, but for
+  // now am just leaving it as an isolated task
+  //
+  grunt.registerTask("release", "Release a new version - bumps bower.json, git tags, commits and pushes it", function (target) {
+    if (!target) {
+      target = "patch"
+    }
+    grunt.task.run(["bump-only:" + target, "bump-commit"]);
+  });
+};
+
 module.exports = {
-  createConnectConfig: createConnectConfig
+  createConnectConfig: createConnectConfig,
+  registerCopyTasks: registerCopyTasks,
+  registerReleaseTask: registerReleaseTask
 };
