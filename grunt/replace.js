@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 module.exports = function (grunt, options) {
 
-  grunt.log.writeln('Replace config',options);
+  grunt.log.verbose.writeln('Replace config',options);
   config = {};
   // Where to read the environment specific configs
   var envDir = './config/environments/';
@@ -29,7 +29,7 @@ module.exports = function (grunt, options) {
 
   var uiProject = "bower_components/" + options.uiProject + "/";
   var contentProject = "bower_components/" + options.contentProject + "/";
-  grunt.log.writeln("Replace config UI : " + uiProject + " Content " + contentProject);
+  grunt.log.verbose.writeln("Replace config UI : " + uiProject + " Content " + contentProject);
 
   _.each(environments, function (env) {
     // config replacement tasks

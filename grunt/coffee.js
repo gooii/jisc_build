@@ -10,7 +10,7 @@ var toDist = {
   expand: true,
   cwd: 'app',
   src: 'scripts/**/*.coffee',
-  dest: '.tmp',
+  dest: 'dist',
   ext: '.js'
 };
 
