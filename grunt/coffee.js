@@ -19,7 +19,7 @@ var options = {
 };
 
 module.exports = {
-    serve: {
+    tmp: {
       options: options,
       files: [toTmp]
     },
