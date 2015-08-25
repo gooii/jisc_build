@@ -56,7 +56,7 @@ module.exports = function (grunt, options) {
       userDataPattern.replacement = '<%= grunt.file.read("' + uiProject + 'server/shib.php") %>';
     }
 
-    grunt.verbose.log.writeln('GITINFO',"<%= gitinfo %>");
+    grunt.log.verbose.writeln('GITINFO',"<%= gitinfo %>");
 
     var gitInfoPattern = {
       match: 'buildInfo',
