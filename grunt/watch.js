@@ -1,6 +1,6 @@
 module.exports = {
     options: {
-        livereload: '<%= connect.livereload.options.livereload %>'
+        livereload: ''
     },
     html: {
         files: [

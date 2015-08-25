@@ -248,8 +248,66 @@ registerReleaseTask = function(grunt) {
   });
 };
 
+var fonts = function(outDir) {
+  return {
+    expand: true,
+    dot: true,
+    cwd: 'bower_components/font-awesome/fonts',
+    dest: outDir + '/fonts',
+    src: '*.*'
+  };
+};
+
+var uiImages = function(outDir) {
+  return {
+    // static JJA_UI images (including favicon) and shared partials
+    expand: true,
+    dot: true,
+    cwd: 'bower_components/jja_ui/app',
+    dest: outDir,
+    src: [
+      '*.ico',
+      'images/{,*/}/**/*.*'
+    ]
+  };
+};
+
+var appHtmlImages = function(outDir) {
+  return {
+    /* copy across index.html and any image resource from search app */
+    expand: true,
+    dot: true,
+    cwd: 'app',
+    dest: outDir,
+    src: [
+      'partials/**/*.html',
+      'images/{,*/}/**/*.*'
+    ]
+  };
+}
+
+var brandsContent = function(project) {
+  return {
+    files: [{
+      expand: true,
+      dot: true,
+      cwd: 'bower_components/' + project + '_content/brands',
+      dest: 'dist/brands',
+      src: '**/*.*'
+    }]
+  }
+};
+
+copySets = {
+  fonts:fonts,
+  uiImages:uiImages,
+  appHtmlImages:appHtmlImages,
+  brands:brandsContent
+};
+
 module.exports = {
   createConnectConfig: createConnectConfig,
   registerCopyTasks: registerCopyTasks,
-  registerReleaseTask: registerReleaseTask
+  registerReleaseTask: registerReleaseTask,
+  copySets: copySets
 };
