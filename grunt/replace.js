@@ -29,6 +29,7 @@ module.exports = function (grunt, options) {
 
   var uiProject = "bower_components/" + options.uiProject + "/";
   var contentProject = "bower_components/" + options.contentProject + "/";
+  var buildProject = "node_modules/jisc_build/";
   grunt.log.verbose.writeln("Replace config UI : " + uiProject + " Content " + contentProject);
 
   _.each(environments, function (env) {
@@ -53,7 +54,7 @@ module.exports = function (grunt, options) {
       userDataPattern.replacement += newline + 'var brands =<%= grunt.file.read("' + contentProject + 'brands/brands.json") %>;' + newline;
       userDataPattern.replacement += newline + '<%= grunt.file.read("' + contentProject + 'brands/routes.js") %>' + newline;
     } else {
-      userDataPattern.replacement = '<%= grunt.file.read("' + uiProject + 'server/shib.php") %>';
+      userDataPattern.replacement = '<%= grunt.file.read("' + buildProject + 'server/shib.php") %>';
     }
 
     grunt.log.verbose.writeln('GITINFO',"<%= gitinfo %>");

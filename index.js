@@ -210,15 +210,15 @@ function resolveBrandFile(root, brands, file, isTemplate) {
 
 }
 
-registerCopyTasks = function(grunt, project) {
+registerCopyTasks = function(grunt) {
   grunt.registerTask("copy_shib_login", function () {
     grunt.file.mkdir("dist/Login");
-    grunt.file.copy("bower_components/" + project + "_ui/server/login.php", "dist/Login/login.php");
+    grunt.file.copy("node_modules/jisc_build/server/login.php", "dist/Login/login.php");
   });
 
   grunt.registerTask("copy_template_php", function () {
     grunt.file.mkdir("dist/templates/");
-    grunt.file.copy("bower_components/" + project + "_ui/server/templates/index.php", "dist/templates/index.php");
+    grunt.file.copy("node_modules/jisc_build/server/templates/index.php", "dist/templates/index.php");
   });
 
   grunt.registerTask("copy_robots_txt", function () {
