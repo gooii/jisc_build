@@ -280,11 +280,11 @@ var appHtmlImages = function(outDir) {
     cwd: 'app',
     dest: outDir,
     src: [
-      'partials/**/*.html',
+      '**/*.html',
       'images/{,*/}/**/*.*'
     ]
   };
-}
+};
 
 var brandsContent = function(project) {
   return {
