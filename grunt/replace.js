@@ -2,8 +2,14 @@ var _ = require('lodash');
 
 module.exports = function (grunt, options) {
 
-  grunt.log.verbose.writeln('Replace config',options);
   config = {};
+
+  if(!options.uiProject && !options.contentProject) {
+    grunt.log.writeln('Skipping replace, no uiProject or contentProject configured');
+    return config;
+  }
+
+  grunt.log.verbose.writeln('Replace config',options);
   // Where to read the environment specific configs
   var envDir = './config/environments/';
   // Which environments are in use

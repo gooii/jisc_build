@@ -1,5 +1,4 @@
 var compass = require('compass-importer');
-
 var sassTypes = require('grunt-sass/node_modules/node-sass').types;
 
 uiSassBootstrap = function(url, prev, done){
