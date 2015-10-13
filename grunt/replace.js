@@ -54,9 +54,10 @@ module.exports = function (grunt, options) {
     var userDataPattern = {match: 'userData'};
 
     var newline = '\n';
+
     // If its not a preproduction or production build then we also need to inject the configs from the content branding module
     if (includer.data != 'shib.php') {
-      userDataPattern.replacement = '<%= grunt.file.read("' + uiProject + 'server/' + includer.data + '") %>';
+      userDataPattern.replacement = '<%= grunt.file.read("' + buildProject + 'server/' + includer.data + '") %>';
       userDataPattern.replacement += newline + 'var brands =<%= grunt.file.read("' + contentProject + 'brands/brands.json") %>;' + newline;
       userDataPattern.replacement += newline + '<%= grunt.file.read("' + contentProject + 'brands/routes.js") %>' + newline;
     } else {
@@ -75,6 +76,7 @@ module.exports = function (grunt, options) {
 
     var patterns = [userDataPattern, gitInfoPattern];
 
+    grunt.log.verbose.writeln('UserData : ',env, userDataPattern);
     config['preload_' + env] = {
       options: {
         patterns: patterns
