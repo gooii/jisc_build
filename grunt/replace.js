@@ -4,8 +4,8 @@ module.exports = function (grunt, options) {
 
   config = {};
 
-  if(!options.uiProject && !options.contentProject) {
-    grunt.log.writeln('Skipping replace, no uiProject or contentProject configured');
+  if(!options.contentProject) {
+    grunt.log.writeln('Skipping replace : no contentProject configured');
     return config;
   }
 
@@ -33,10 +33,9 @@ module.exports = function (grunt, options) {
     dest: 'app/scripts/components/constants/'
   }];
 
-  var uiProject = "bower_components/" + options.uiProject + "/";
   var contentProject = "bower_components/" + options.contentProject + "/";
   var buildProject = "node_modules/jisc_build/";
-  grunt.log.verbose.writeln("Replace config UI : " + uiProject + " Content " + contentProject);
+  grunt.log.verbose.writeln("Replace config. Content " + contentProject);
 
   _.each(environments, function (env) {
     // config replacement tasks
