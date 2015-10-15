@@ -20,7 +20,7 @@ module.exports = function (grunt, options) {
     staging: {data: 'staging.js', src: './dist/index.html', dest: 'dist/index.html'},
     preproduction: {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
     production: {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
-    local: {data: 'shib.php', src: './app/index.html', dest: 'dist/index.php'}
+    local: {data: 'dev.js', src: './app/index.html', dest: 'dist/index.php'}
   };
 
   // The 'src' is the service template which will have the template strings replaced by

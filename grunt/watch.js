@@ -26,6 +26,12 @@ module.exports = {
         files: ['app/scripts/**/{,*/}*.coffee'],
         tasks: ['coffee']
     },
+    index: {
+        files: [
+            'app/index.html'
+        ],
+        tasks: ['replace:preload_development']
+    },
     gruntfile: {
         files: ['Gruntfile.js']
     }
