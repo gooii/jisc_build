@@ -16,11 +16,11 @@ module.exports = function (grunt, options) {
   var environments = ['development', 'staging', 'preproduction', 'production', 'local'];
 
   var includes = {
-    development: {data: 'dev.js', src: './app/index.html', dest: '.tmp/index.html'},
-    staging: {data: 'staging.js', src: './dist/index.html', dest: 'dist/index.html'},
-    preproduction: {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
-    production: {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
-    local: {data: 'dev.js', src: './app/index.html', dest: 'dist/index.php'}
+    development:    {data: 'dev.js',      src: './app/index.html',  dest: '.tmp/index.html'},
+    staging:        {data: 'staging.js',  src: './dist/index.html', dest: 'dist/index.html'},
+    preproduction:  {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
+    production:     {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
+    local:          {data: 'dev.js',      src: './app/index.html',  dest: 'dist/index.php'}
   };
 
   // The 'src' is the service template which will have the template strings replaced by
@@ -76,6 +76,7 @@ module.exports = function (grunt, options) {
     var patterns = [userDataPattern, gitInfoPattern];
 
     grunt.log.verbose.writeln('UserData : ',env, userDataPattern);
+    grunt.log.verbose.writeln('ReplaceFiles : ',env, replaceFiles);
     config['preload_' + env] = {
       options: {
         patterns: patterns

@@ -272,18 +272,23 @@ var uiImages = function(outDir) {
   };
 };
 
-var appHtmlImages = function(outDir) {
-  return {
+var appHtmlImages = function(outDir, partialsOnly) {
+  var cfg = {
     /* copy across index.html and any image resource from search app */
     expand: true,
     dot: true,
     cwd: 'app',
     dest: outDir,
     src: [
-      '**/*.html',
       'images/{,*/}/**/*.*'
     ]
   };
+  if(partialsOnly === true) {
+    cfg.src.unshift('partials/**/*.html');
+  } else {
+    cfg.src.unshift('**/*.html');
+  }
+  return cfg;
 };
 
 var brandsContent = function(project) {
