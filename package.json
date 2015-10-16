@@ -1,7 +1,7 @@
 {
   "name": "jisc_build",
   "description": "Shared jisc build scripts and configuration for JJA and JHT",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "author": "Martin Wood-Mitrovski",
   "dependencies": {
     "connect": "2.13.1",
