@@ -1,5 +1,5 @@
 var compass = require('compass-importer');
-var sassTypes = require('grunt-sass/node_modules/node-sass').types;
+var sassTypes = require('node-sass').types;
 
 uiSassBootstrap = function(url, prev, done){
 
@@ -36,13 +36,11 @@ module.exports = {
   dist: {
     options: noSourceMap,
     files: [toDist]
-
   },
   production: {
     // Production writes into .tmp so that cssmin:generated has files to work from.
     options: noSourceMap,
     files: [toTmp]
-
   },
   serve: {
     files: [toTmp]
