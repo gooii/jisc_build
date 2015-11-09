@@ -36,13 +36,11 @@ module.exports = {
   dist: {
     options: noSourceMap,
     files: [toDist]
-
   },
   production: {
     // Production writes into .tmp so that cssmin:generated has files to work from.
     options: noSourceMap,
     files: [toTmp]
-
   },
   serve: {
     files: [toTmp]
