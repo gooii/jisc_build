@@ -280,6 +280,7 @@ var appHtmlImages = function(outDir, partialsOnly) {
     cwd: 'app',
     dest: outDir,
     src: [
+      'favicon.ico',
       'images/{,*/}/**/*.*'
     ]
   };
