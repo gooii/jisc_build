@@ -7,9 +7,15 @@ echo 'ip:"' . $_SERVER['REMOTE_ADDR'] . '"';
 
 if(array_key_exists("persistent-id", $_SERVER)) {
   $persistentIdParts = explode('!', $_SERVER['persistent-id']);
-  echo ',idp:"' . $persistentIdParts[0] . '"';
+  $idp = $persistentIdParts[0];
+  echo ',idp:"' . $idp . '"';
   if(count($persistentIdParts) >= 3) {
-    echo ',persistentId:"' . $persistentIdParts[2] . '"';
+    $pid = $persistentIdParts[2];
+    $idpPos = strpos($pid,$idp);
+    if($idpPos !== false) {
+      $pid = substr($pid, 0, $idpPos - 1);
+    }
+    echo ',persistentId:"' . $pid . '"';
   }
   if(array_key_exists("affiliation", $_SERVER)) {
     echo ',affiliation:"' . $_SERVER['affiliation'] . '"';
