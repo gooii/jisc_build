@@ -17,7 +17,7 @@ module.exports = function (grunt, options) {
 
   var includes = {
     development:    {data: 'dev.js',      src: './app/index.html',  dest: '.tmp/index.html'},
-    staging:        {data: 'staging.js',  src: './dist/index.html', dest: 'dist/index.html'},
+    staging:        {data: 'staging.js',  src: './dist/index.html', dest: 'dist/index.php'},
     preproduction:  {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
     production:     {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
     local:          {data: 'dev.js',      src: './app/index.html',  dest: 'dist/index.php'}
