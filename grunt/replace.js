@@ -13,14 +13,13 @@ module.exports = function (grunt, options) {
   // Where to read the environment specific configs
   var envDir = './config/environments/';
   // Which environments are in use
-  var environments = ['development', 'staging', 'preproduction', 'production', 'local'];
+  var environments = ['development', 'staging', 'production', 'local'];
 
   var includes = {
-    development:    {data: 'dev.js',      src: './app/index.html',  dest: '.tmp/index.html'},
+    local:          {data: 'dev.js',      src: './app/index.html',  dest: 'dist/index.php'},
+    development:    {data: 'dev.js',      src: './dist/index.html', dest: 'dist/index.php'},
     staging:        {data: 'staging.js',  src: './dist/index.html', dest: 'dist/index.php'},
-    preproduction:  {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
     production:     {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
-    local:          {data: 'dev.js',      src: './app/index.html',  dest: 'dist/index.php'}
   };
 
   // The 'src' is the service template which will have the template strings replaced by
@@ -54,7 +53,7 @@ module.exports = function (grunt, options) {
 
     var newline = '\n';
 
-    // If its not a preproduction or production build then we also need to inject the configs from the content branding module
+    // If its not a production build then we also need to inject the configs from the content branding module
     if (includer.data != 'shib.php') {
       userDataPattern.replacement = '<%= grunt.file.read("' + buildProject + 'server/' + includer.data + '") %>';
       userDataPattern.replacement += newline + 'var brands =<%= grunt.file.read("' + contentProject + 'brands/brands.json") %>;' + newline;
