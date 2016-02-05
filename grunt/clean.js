@@ -36,7 +36,12 @@ module.exports = {
       ]
     }]
   },
-  preproduction_html: {
+  development_html: {
+    files: [{
+      src: ['dist/index.html']
+    }]
+  },
+  staging_html: {
     files: [{
       src: ['dist/index.html']
     }]
