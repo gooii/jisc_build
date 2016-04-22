@@ -1,7 +1,8 @@
 module.exports = {
   tmp: {
     options: {
-      cacheBuster: false
+      cacheBuster: false,
+      force: true
     },
     files: {
       '.tmp/styles/style.css': '.tmp/styles/style.css'
@@ -9,7 +10,8 @@ module.exports = {
   },
   dist: {
     options: {
-      cacheBuster: true
+      cacheBuster: true,
+      force: true
     },
     files: {
       'dist/styles/style.css': 'dist/styles/style.css'
@@ -17,7 +19,8 @@ module.exports = {
   },
   local: {
     options: {
-      cacheBuster: false
+      cacheBuster: false,
+      force: true
     },
     files: {
       'dist/styles/style.css': 'dist/styles/style.css'
