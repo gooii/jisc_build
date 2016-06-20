@@ -16,10 +16,10 @@ module.exports = function (grunt, options) {
   var environments = ['development', 'staging', 'production', 'local'];
 
   var includes = {
-    local:          {data: 'dev.js',      src: './app/index.html',  dest: 'dist/index.php'},
-    development:    {data: 'dev.js',      src: './dist/index.html', dest: 'dist/index.php'},
-    staging:        {data: 'staging.js',  src: './dist/index.html', dest: 'dist/index.php'},
-    production:     {data: 'shib.php',    src: './dist/index.html', dest: 'dist/index.php'},
+    local:          {data: 'dev.js'  , src: './app/index.html',  dest: 'dist/index.php'},
+    development:    {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
+    staging:        {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
+    production:     {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
   };
 
   // The 'src' is the service template which will have the template strings replaced by
