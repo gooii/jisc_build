@@ -1,3 +1,4 @@
 node_modules
 jisc_build.iml
 npm-debug.log
+.projectile
