@@ -30,8 +30,11 @@ $DEBUG = false;
 
 // Brands directory on disk. Change to absolute if req'd.
 $contentPath = '../brands/';
-$templateName = $_GET['template'];
-$imageName = $_GET['image'];
+
+// Check for existence of parameter in GET request first to avoid
+// excessive PHP logging
+$templateName = (isset($_GET['template'])) ? $_GET['template'] : null;
+$imageName = (isset($_GET['image'])) ? $_GET['image'] : null;
 
 if($templateName == NULL && $imageName == NULL) {
   exit;
