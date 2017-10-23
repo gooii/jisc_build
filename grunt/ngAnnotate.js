@@ -7,7 +7,7 @@ module.exports = {
             {
                 expand: true,
                 cwd: '.tmp/concat/scripts',
-                src: '*.js',
+                src: 'scripts.js',
                 dest: '.tmp/concat/scripts'
             }
         ]
