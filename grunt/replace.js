@@ -13,10 +13,11 @@ module.exports = function (grunt, options) {
   // Where to read the environment specific configs
   var envDir = './config/environments/';
   // Which environments are in use
-  var environments = ['development', 'staging', 'production', 'local'];
+  var environments = ['preview', 'development', 'staging', 'production', 'local'];
 
   var includes = {
     local:          {data: 'dev.js'  , src: './app/index.html',  dest: 'dist/index.php'},
+    preview:        {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
     development:    {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
     staging:        {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
     production:     {data: 'shib.php', src: './dist/index.html', dest: 'dist/index.php'},
@@ -74,8 +75,8 @@ module.exports = function (grunt, options) {
 
     var patterns = [userDataPattern, gitInfoPattern];
 
-    grunt.log.verbose.writeln('UserData : ',env, userDataPattern);
-    grunt.log.verbose.writeln('ReplaceFiles : ',env, replaceFiles);
+    grunt.log.verbose.writeln('UserData     : ', env, userDataPattern);
+    grunt.log.verbose.writeln('ReplaceFiles : ', env, replaceFiles);
     config['preload_' + env] = {
       options: {
         patterns: patterns
