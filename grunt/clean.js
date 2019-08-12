@@ -41,6 +41,11 @@ module.exports = {
       src: ['dist/index.html']
     }]
   },
+  preview_html: {
+    files: [{
+      src: ['dist/index.html']
+    }]
+  },
   staging_html: {
     files: [{
       src: ['dist/index.html']
